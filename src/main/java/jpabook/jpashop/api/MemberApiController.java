@@ -38,7 +38,7 @@ public class MemberApiController {
 
     @Data
     @AllArgsConstructor // 껍데기클래스 생성
-    static class Result<T>{
+    static class Result<T> {
         /*private int count;*/
         private T data;
     }
