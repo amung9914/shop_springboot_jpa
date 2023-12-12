@@ -107,6 +107,8 @@ public class OrderApiController {
      * DTO 직접 조회
      * toOne은 조인
      * toMany는 조인하지않고 루프돌면서 직접 채운다. (n+1문제 발생)
+     * 특정 주문 단건 조회시에는 유용하다.
+     * 예를들어 Order데이터가 1건이면 OrderItems도 1번만 조회한다.
      */
     @GetMapping("/api/v4/orders")
     public List<OrderQueryDto> ordersV4(){
@@ -114,9 +116,11 @@ public class OrderApiController {
     }
 
     /**
-     * in Query로 쿼리 두방 끝.
-     * 장점 : data select 양이 줄어듬
+     * in Query로 쿼리 두방 끝.(정규화된 데이터 가지고 옴)
+     * 데이터를 한꺼번에 처리할 때 많이 사용하는 방식
+     * 장점 : data select 양이 줄어듬, 성능 효과 좋음, 페이징도 가능,
      * 단점 : 코딩양이 많음.
+     * 근데 이게 뭐 배치사이즈 적용하는거랑 다를바 없다.
      */
     @GetMapping("/api/v5/orders")
     public List<OrderQueryDto> ordersV5(){
@@ -124,7 +128,7 @@ public class OrderApiController {
     }
 
     /**
-     * 쿼리 진짜 한번만 나감
+     * 쿼리 진짜 한번만 나감 대신 네트워크 전송량이 많음.
      * 데이터가 엄청 큰 경우 상황에 따라 V5보다 더 느릴 수 도 있다.
      * 대신 페이징 불가능, 애플리케이션 추가 작업 필요하다.
      * 이 부분은 난이도가 좀 있으니 우선 이런게 있구나 정도 알아두시고, 향후 성능 최적화의 필요성이 느껴질 때 다시 참고하시면 됩니다.
